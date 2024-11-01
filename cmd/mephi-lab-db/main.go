@@ -4,14 +4,11 @@ import (
 	"log"
 	"os"
 
+	"mephi-lab-db/internal/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-type bibki struct {
-	gorm.Model
-	number int
-}
 
 func main() {
 	db, err := gorm.Open(postgres.Open(os.Getenv("DSN")), &gorm.Config{})
@@ -19,5 +16,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&bibki{})
+	dst := []interface{}{
+		&models.User{},
+		&models.Cuisine{},
+		&models.Dish{},
+		&models.RecipeStep{},
+		&models.Review{},
+		&models.Favorites{},
+		&models.Article{},
+		&models.Ingredient{},
+	}
+
+	db.AutoMigrate(dst...)
 }
