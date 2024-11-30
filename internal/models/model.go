@@ -12,27 +12,28 @@ type Cuisine struct {
 }
 
 type Dish struct {
-	DishID      uint `gorm:"primarykey"`
-	CuisineID   uint
-	Cuisine     Cuisine
-	Name, Type  string `gorm:"not null"`
+	DishID    uint `gorm:"primarykey"`
+	CuisineID uint
+	Cuisine   Cuisine
+	Name      string `json:"title" gorm:"not null"`
+	//Type        string `gorm:"not null"`
 	EnergyValue uint
 	Time        uint
 }
 
 type RecipeStep struct {
-	RecipeStep uint `gorm:"primarykey"`
-	DishID     uint
-	Dish       Dish
-	Timing     uint
-	Text       string
+	RecipeStepID uint `gorm:"primarykey"`
+	DishID       uint
+	Dish         Dish
+	Timing       uint
+	Text         string
 }
 
 type Favorites struct {
 	FavoritesID uint `gorm:"primarykey"`
 	UserID      uint `gorm:"unique"`
 	User        User
-	Dish        []Dish `gorm:"many2many:favorites_dish"`
+	Dish        []Dish `gorm:"many2many:favorites_dishes"`
 }
 
 type Review struct {
@@ -51,12 +52,22 @@ type Article struct {
 	User      User
 	Text      string
 	Title     string
-	Date      uint
-	Dish      []Dish `gorm:"many2many:article_dish"`
+	//Date      uint
+	Dish []Dish `gorm:"many2many:article_dishes;"`
 }
 
 type Ingredient struct {
-	IngredientID uint `gorm:"primarykey"`
-	Name         string
-	Dish         []Dish `gorm:"many2many:ingredient_dish"`
+	IngredientID uint   `json:"id" gorm:"primarykey"`
+	Name         string `json:"name"`
+	Dish         []Dish `gorm:"many2many:ingredient_dishes;"`
+}
+
+type IngredientDish struct {
+	IngredientID uint `gorm:"column:ingredient_id"`
+	DishID       uint `gorm:"column:dish_id"`
+}
+
+type ArticleDish struct {
+	ArticleID uint `gorm:"column:article_id"`
+	DishID    uint `gorm:"column:dish_id"`
 }
